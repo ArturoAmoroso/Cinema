@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cinema.Data;
 using Cinema.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,8 +28,8 @@ namespace Cinema
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            //services.AddTransient<IActorsServices, ActorsServices>();
-            services.AddSingleton<IActorsServices, ActorsServices>();
+            services.AddSingleton<ICineRepository, CineRepository>();
+            services.AddTransient<IActorsServices, ActorsServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -11,8 +11,8 @@ namespace Cinema.Data
         IEnumerable<Actor> GetActors();
         Actor GetActor(int id);
         Actor CreateActor(Actor actor);
-        bool DeleteActor(int id);
-        Actor UpdateActor(int id, Actor actor);
+        bool DeleteActor(Actor actor);
+        Actor UpdateActor(Actor actor);
 
         /*IEnumerable<Movie> GetMovies(int idActor);
         Movie GetMovie(int idActor, int idMovie);

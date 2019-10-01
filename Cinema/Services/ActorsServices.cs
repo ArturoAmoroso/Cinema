@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cinema.Data;
 using Cinema.Exceptions;
 using Cinema.Models;
 
@@ -9,45 +10,23 @@ namespace Cinema.Services
 {
     public class ActorsServices : IActorsServices
     {
-        List<Actor> actors;
+        private readonly ICineRepository cineRepository;
         private HashSet<string> allowebOrderBy;
-        public ActorsServices()
+        public ActorsServices(ICineRepository cineRepository)
         {
-            actors = new List<Actor>() {
-                new Actor() {
-                    Id = 111,
-                    Name = "Leonardo",
-                    Lastname = "DiCaprio",
-                    Age = 56
-                },
-                new Actor(){
-                    Id = 222,
-                    Name = "Robert",
-                    Lastname = "DeNiro",
-                    Age = 75
-                }
-            };
+            this.cineRepository = cineRepository;
             allowebOrderBy = new HashSet<string>() { "name", "lastname", "age", "id"};
         }
 
         public Actor CreateActor(Actor actor)
         {
-            var lastActor = actors.OrderByDescending(a => a.Id).FirstOrDefault();
-            int nextId = lastActor == null ? 1 : lastActor.Id + 1;
-            /*if (lastActor == null)
-                int nextId = 1;
-            else
-                int nextId = lastActor.Id +1;
-            */
-            actor.Id = nextId;
-            actors.Add(actor);
-            return actor;
+            return cineRepository.CreateActor(actor);
         }
 
         public bool DeleteActor(int Id)
         {
             var actorFound = validateActor(Id);
-            return actors.Remove(actorFound);
+            return cineRepository.DeleteActor(actorFound);
         }
 
         public Actor GetActor(int Id)
@@ -66,6 +45,7 @@ namespace Cinema.Services
             {
                 throw new BadRequestEx($"Actors cannot orderBy:{orderBy} , only by: {string.Join(" , ", allowebOrderBy) }");
             }
+            var actors = cineRepository.GetActors();
             switch (ordeByLower)
             {
                 case "name":
@@ -77,7 +57,6 @@ namespace Cinema.Services
                 default:
                     return actors;
             }
-            //return actors;
         }
         public Actor UpdateActor(int Id, Actor actor)
         {
@@ -90,14 +69,12 @@ namespace Cinema.Services
             {
                 throw new BadRequestEx("URL Id and Body Id must be equal");
             }
-            actorFound.Name = actor.Name;
-            actorFound.Lastname = actor.Lastname;
-            actorFound.Age = actor.Age;
+            cineRepository.UpdateActor(actor);
             return actorFound;
         }
         private Actor validateActor(int id)
         {
-            var actorFound = actors.SingleOrDefault(a => a.Id == id);
+            var actorFound = cineRepository.GetActor(id);
             if (actorFound == null)
                 throw new NotFoundEx($"There isn't an actor with Id: {id}");
             return actorFound;

@@ -28,17 +28,22 @@ namespace Cinema.Data
         }
         public Actor CreateActor(Actor actor)
         {
-            throw new NotImplementedException();
+            var lastActor = actors.OrderByDescending(a => a.Id).FirstOrDefault();
+            int nextId = lastActor == null ? 1 : lastActor.Id + 1;
+            actor.Id = nextId;
+            actors.Add(actor);
+            return actor;
         }
 
-        public bool DeleteActor(int id)
+        public bool DeleteActor(Actor actor)
         {
-            throw new NotImplementedException();
+            return actors.Remove(actor);
         }
 
         public Actor GetActor(int id)
         {
-            throw new NotImplementedException();
+            var actor = actors.SingleOrDefault(a => a.Id == id);
+            return actor;
         }
 
         public IEnumerable<Actor> GetActors()
@@ -46,9 +51,13 @@ namespace Cinema.Data
             return actors;
         }
 
-        public Actor UpdateActor(int id, Actor actor)
+        public Actor UpdateActor(Actor actor)
         {
-            throw new NotImplementedException();
+            var actorFound = actors.SingleOrDefault(a => a.Id == actor.Id);
+            actorFound.Name = actor.Name;
+            actorFound.Lastname = actor.Lastname;
+            actorFound.Age= actor.Age;
+            return actorFound;
         }
     }
 }
