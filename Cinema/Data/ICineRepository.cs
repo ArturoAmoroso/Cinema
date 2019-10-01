@@ -14,10 +14,10 @@ namespace Cinema.Data
         bool DeleteActor(Actor actor);
         Actor UpdateActor(Actor actor);
 
-        /*IEnumerable<Movie> GetMovies(int idActor);
-        Movie GetMovie(int idActor, int idMovie);
-        Movie CreateMovie(int idActor, Movie movie);
-        bool DeleteMovie(int idActor, int idMovie);
-        Movie UpdateMovie(int idActor, int idMovie, Movie movie);*/
+        IEnumerable<Movie> GetMovies(int idActor);
+        Movie GetMovie(int idMovie);
+        Movie CreateMovie(Movie movie);
+        bool DeleteMovie(Movie movie);
+        Movie UpdateMovie(Movie movie);
     }
 }

@@ -2,61 +2,70 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cinema.Data;
+using Cinema.Exceptions;
 using Cinema.Models;
 
 namespace Cinema.Services
 {
     public class MoviesServices : IMoviesServices
     {
-        private readonly IActorsServices actorsServices;
-        List<Movie> movies;   
-        public MoviesServices(IActorsServices actorsServices)
+        private readonly ICineRepository cineRepository;
+        public MoviesServices(ICineRepository cineRepository)
         {
-            movies = new List<Movie>() {
-                new Movie(){
-                    Id = 1,
-                    Name = "Titanic",
-                    Duration = 3,
-                    Genre = "Romatic",
-                    ActorId = 1
-                },
-                new Movie(){
-                    Id = 2,
-                    Name = "Taxi Driver",
-                    Duration = 2,
-                    Genre = "Drama",
-                    ActorId = 2
-                }
-            };
-            this.actorsServices = actorsServices;
+            this.cineRepository = cineRepository;
         }
         public Movie CreateMovie(int idActor, Movie movie)
         {
-            throw new NotImplementedException();
+            validateActor(idActor);
+            if (movie.ActorId == 0)
+                movie.ActorId = idActor;
+            if (movie.ActorId != idActor)
+                throw new BadRequestEx($"idActor:{idActor} in URL must be equal to Body:{movie.ActorId}");
+            return cineRepository.CreateMovie(movie);
         }
 
         public bool DeleteMovie(int idActor, int idMovie)
         {
-            throw new NotImplementedException();
+            var id = idMovie;
+            /*if (idMovie == 0)
+                throw new BadRequestEx($"idMovie es required to delete a movie");*/
+            var movieDelete = GetMovie(idActor, idMovie);
+            return cineRepository.DeleteMovie(movieDelete);
         }
 
         public Movie GetMovie(int idActor, int idMovie)
         {
-            throw new NotImplementedException();
+            validateActor(idActor);
+            var movieRepo = cineRepository.GetMovie(idMovie);
+            if (movieRepo == null)
+                throw new NotFoundEx($"There isn't a movie with id:{idMovie}");
+            if (idActor != movieRepo.ActorId)
+                throw new BadRequestEx($"Movie: {idMovie} doesn't belong to Actor: {idActor}");
+            return movieRepo;
         }
 
         public IEnumerable<Movie> GetMovies(int idActor)
         {
-            throw new NotImplementedException();
+            validateActor(idActor);
+            var movies = cineRepository.GetMovies(idActor);
+            return movies.Where(m => m.ActorId == idActor);
         }
 
         public Movie UpdateMovie(int idActor, int idMovie, Movie movie)
         {
-            throw new NotImplementedException();
+            GetMovie(idActor, idMovie);
+            movie.Id = idMovie;             //Verificar
+            if (movie.ActorId == 0)
+                movie.ActorId = idActor;
+            return cineRepository.UpdateMovie(movie);
         }
         private Actor validateActor(int id)
         {
-            throw new NotImplementedException();
+            var actorFound = cineRepository.GetActor(id);
+            if (actorFound == null)
+                throw new NotFoundEx($"There isn't an actor with id: {id}");
+            return actorFound;
         }
     }
 }

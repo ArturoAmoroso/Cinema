@@ -30,6 +30,7 @@ namespace Cinema
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSingleton<ICineRepository, CineRepository>();
             services.AddTransient<IActorsServices, ActorsServices>();
+            services.AddTransient<IMoviesServices, MoviesServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
