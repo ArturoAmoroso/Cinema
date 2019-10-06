@@ -31,11 +31,11 @@ namespace Cinema.Services
             }
         }
         [HttpGet("{id}")]
-        public ActionResult<Actor> GetActor(int id/*, bool showMovies = false*/)
+        public ActionResult<Actor> GetActor(int id, bool showMovies = false)
         {
             try
             {
-                return Ok(actorsServices.GetActor(id));
+                return Ok(actorsServices.GetActor(id, showMovies));
             }
             catch (NotFoundEx ex)
             {

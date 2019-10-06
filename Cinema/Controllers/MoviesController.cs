@@ -18,7 +18,6 @@ namespace Cinema.Controllers
         {
             this.moviesServices = moviesServices;
         }
-        //[HttpGet("{idActor}")]
         [HttpGet]
         public ActionResult<IEnumerable<Movie>> GetMovies(int idActor)
         {

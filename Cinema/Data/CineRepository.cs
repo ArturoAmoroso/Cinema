@@ -71,9 +71,13 @@ namespace Cinema.Data
             return movies.Remove(movie);
         }
 
-        public Actor GetActor(int id)
+        public Actor GetActor(int id, bool showMovies)
         {
             var actor = actors.SingleOrDefault(a => a.Id == id);
+            if (showMovies == true)
+                actor.Movies = movies.Where(m => m.ActorId == id);
+            else
+                actor.Movies = null;
             return actor;
         }
 
@@ -88,7 +92,7 @@ namespace Cinema.Data
             return movieFound;
         }
 
-        public IEnumerable<Movie> GetMovies(int idActor)
+        public IEnumerable<Movie> GetMovies()
         {
             return movies;
         }

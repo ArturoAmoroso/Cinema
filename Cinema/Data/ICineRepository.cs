@@ -9,12 +9,12 @@ namespace Cinema.Data
     public interface ICineRepository
     {
         IEnumerable<Actor> GetActors();
-        Actor GetActor(int id);
+        Actor GetActor(int id, bool showMovies = false);
         Actor CreateActor(Actor actor);
         bool DeleteActor(Actor actor);
         Actor UpdateActor(Actor actor);
 
-        IEnumerable<Movie> GetMovies(int idActor);
+        IEnumerable<Movie> GetMovies();
         Movie GetMovie(int idMovie);
         Movie CreateMovie(Movie movie);
         bool DeleteMovie(Movie movie);

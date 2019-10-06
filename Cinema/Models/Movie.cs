@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Cinema.Models
         public int Duration { get; set; }
         [StringLength(20, ErrorMessage = "{0} can't have more than {1} characters")]
         public string Genre { get; set; }
-
+        //[JsonIgnore]
         public int ActorId { get; set; }
     }
 }

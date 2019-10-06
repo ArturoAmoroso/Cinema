@@ -27,9 +27,8 @@ namespace Cinema.Services
 
         public bool DeleteMovie(int idActor, int idMovie)
         {
-            var id = idMovie;
             /*if (idMovie == 0)
-                throw new BadRequestEx($"idMovie es required to delete a movie");*/
+                throw new BadRequestEx($"idMovie URL es required to delete a movie");*/
             var movieDelete = GetMovie(idActor, idMovie);
             return cineRepository.DeleteMovie(movieDelete);
         }
@@ -48,21 +47,21 @@ namespace Cinema.Services
         public IEnumerable<Movie> GetMovies(int idActor)
         {
             validateActor(idActor);
-            var movies = cineRepository.GetMovies(idActor);
+            var movies = cineRepository.GetMovies();
             return movies.Where(m => m.ActorId == idActor);
         }
 
         public Movie UpdateMovie(int idActor, int idMovie, Movie movie)
         {
             GetMovie(idActor, idMovie);
-            movie.Id = idMovie;             //Verificar
+            movie.Id = idMovie;             //Para no enviar bookId en el Body
             if (movie.ActorId == 0)
                 movie.ActorId = idActor;
             return cineRepository.UpdateMovie(movie);
         }
         private Actor validateActor(int id)
         {
-            var actorFound = cineRepository.GetActor(id);
+            var actorFound = cineRepository.GetActor(id);   //showMovies = false
             if (actorFound == null)
                 throw new NotFoundEx($"There isn't an actor with id: {id}");
             return actorFound;

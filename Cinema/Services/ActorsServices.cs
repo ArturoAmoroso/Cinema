@@ -29,9 +29,9 @@ namespace Cinema.Services
             return cineRepository.DeleteActor(actorFound);
         }
 
-        public Actor GetActor(int Id)
+        public Actor GetActor(int Id, bool showMovies)
         {
-            var actorFound = validateActor(Id);
+            var actorFound = validateActor(Id, showMovies);
             return actorFound;
         }
 
@@ -72,9 +72,9 @@ namespace Cinema.Services
             cineRepository.UpdateActor(actor);
             return actorFound;
         }
-        private Actor validateActor(int id)
+        private Actor validateActor(int id, bool showMovies = false)
         {
-            var actorFound = cineRepository.GetActor(id);
+            var actorFound = cineRepository.GetActor(id, showMovies);
             if (actorFound == null)
                 throw new NotFoundEx($"There isn't an actor with Id: {id}");
             return actorFound;

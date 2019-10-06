@@ -9,7 +9,7 @@ namespace Cinema.Services
     public interface IActorsServices
     {
         IEnumerable<Actor> GetActors(string orderBy);
-        Actor GetActor(int Id);
+        Actor GetActor(int Id, bool showMovies/* = false*/);
         Actor CreateActor(Actor actor);
         bool DeleteActor(int Id);
         Actor UpdateActor(int Id, Actor actor);
